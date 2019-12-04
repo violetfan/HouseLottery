@@ -27,5 +27,17 @@ func (h *House) Audit() bool {
 
 //发布
 func (h *House) Issue() (bool, *House) {
-	return true, h
+	var newHouse House
+	newHouse = *h
+	HouseStore[h.BuildID] = newHouse
+	return true, &newHouse
+}
+
+//获取房源
+func (h *House) GetHouseList() []string {
+	var houseList []string
+	for k := range HouseStore {
+		houseList = append(houseList, k)
+	}
+	return houseList
 }
