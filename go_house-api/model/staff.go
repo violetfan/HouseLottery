@@ -15,12 +15,12 @@ type Staff struct {
 	JoinTime    time.Time `json:"join_time"`
 }
 
-func (u *Staff) Login() (check bool, info Staff) {
+func (u *Staff) Login() (check bool, info *Staff) {
 	//TODO::连接数据,进行验证
 	if u.Name == "admin" && u.Password == "1234567" {
-		return true, *u
+		return true, u
 	}
-	return true, *u
+	return false, nil
 }
 
 func (u *Staff) ChangeAuditStatus() {
