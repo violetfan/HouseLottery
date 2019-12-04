@@ -19,3 +19,13 @@ type House struct {
 	ReceptionSite    string    `json:"reception_site"`
 	LotteryData      time.Time `json:"lottery_data"`
 }
+
+//审核
+func (h *House) Audit() bool {
+	return true
+}
+
+//发布
+func (h *House) Issue() (bool, *House) {
+	return true, h
+}

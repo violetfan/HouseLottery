@@ -2,6 +2,20 @@ package model
 
 import "time"
 
+var StaffStore = map[string]Staff{
+	"Admin": {
+		ID:          0,
+		Name:        "Admin",
+		HeadImg:     "",
+		Sex:         "男",
+		Phone:       "11111",
+		Password:    "123456",
+		Right:       7,
+		StaffStatus: 0,
+		JoinTime:    time.Time{},
+	},
+}
+
 //员工数据模型
 type Staff struct {
 	ID          int       `json:"id"`
@@ -15,11 +29,17 @@ type Staff struct {
 	JoinTime    time.Time `json:"join_time"`
 }
 
-func (u *Staff) Login() (check bool, info *Staff) {
+func (u *Staff) Login() (bool, *Staff) {
 	//TODO::连接数据,进行验证
-	if u.Name == "admin" && u.Password == "1234567" {
-		return true, u
+	info, ok := StaffStore[u.Name]
+
+	if !ok {
+		return false, nil
 	}
+	if info.Name == u.Name && info.Password == u.Password {
+		return true, &info
+	}
+
 	return false, nil
 }
 
@@ -27,6 +47,23 @@ func (u *Staff) ChangeAuditStatus() {
 
 }
 
-func (u *Staff) AddUser() {
+//增加用户
+func (u *Staff) AddUser() bool {
 
+	return true
+}
+
+//删除用户
+func (u *Staff) DelUser() bool {
+	return true
+}
+
+//修改密码
+func (u *Staff) ChangePsw() bool {
+	return true
+}
+
+//获取权利
+func (u *Staff) GetRight() (bool, int) {
+	return true, u.Right
 }

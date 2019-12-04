@@ -19,6 +19,8 @@ var LoginHandles = RouterHandles{
 	},
 }
 
+
+//http://localhost:8080/login?type=0&name=Admin&password=123456
 func Login(w http.ResponseWriter, r *http.Request) {
 	getParam := r.URL.Query() //获取get参数
 

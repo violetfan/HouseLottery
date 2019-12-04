@@ -9,7 +9,7 @@ import (
 var (
 	Router *http.ServeMux
 )
-
+//main.go
 func main() {
 	Router = http.NewServeMux()
 	server.RegisterRouter(Router)
