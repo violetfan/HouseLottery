@@ -1,11 +1,12 @@
 package server
 
 import (
-	"../model"
 	"fmt"
 	"math/rand"
 	"net/http"
 	"time"
+
+	"../model"
 )
 
 var LoginHandles = RouterHandles{
