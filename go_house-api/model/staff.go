@@ -23,3 +23,23 @@ func (u *Staff) Login() (check bool, info Staff) {
 func (u *Staff) ChangeAuditStatus() {
 
 }
+
+//增加用户
+func (u *Staff) AddUser() bool {
+	return true
+}
+
+//删除用户
+func (u *Staff) DelUser() bool {
+	return true
+}
+
+//修改密码
+func (u *Staff) ChangePsw() bool {
+	return true
+}
+
+//获取权利
+func (u *Staff) GetRight() (bool, int) {
+	return true, u.Right
+}

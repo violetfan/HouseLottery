@@ -25,3 +25,51 @@ type HouseResult struct {
 	HouseState bool      `json:"house_state"`
 	TimeStamp  time.Time `json:"time_stamp"`
 }
+
+//审核信息类
+//审核 增加 ，obj：用户u_id/员工s_id
+func (a *AuditNotes) AddRecord(obj string) (bool, *AuditNotes) {
+	return true, a
+}
+
+//审核 撤销，obj：用户u_id/员工s_id
+func (a *AuditNotes) DelRecord(obj string) (bool, *AuditNotes) {
+	return true, a
+}
+
+//修改审核状态
+func (a *AuditNotes) ChangeStatus(obj string) (bool, *AuditNotes) {
+	return true, a
+}
+
+//导出数据
+func (a *AuditNotes) Output(obj string) (bool, *AuditNotes) {
+	return true, a
+}
+
+//摇号信息类
+//增加摇号
+func (l *LotteryResult) AddSelect() bool {
+	return true
+}
+
+//删除摇号
+func (l *LotteryResult) DelSelect() bool {
+	return true
+}
+
+//选房结果类
+//签字确认
+func (h *HouseResult) Confirm() bool {
+	return true
+}
+
+//信息隐藏
+func (h *HouseResult) Hide() bool {
+	return true
+}
+
+//信息显示
+func (h *HouseResult) Show() (bool, *HouseResult) {
+	return true, h
+}
