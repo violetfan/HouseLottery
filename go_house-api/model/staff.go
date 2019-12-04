@@ -1,16 +1,23 @@
 package model
 
+import "time"
+
 //员工数据模型
 type Staff struct {
-	Name     string `json:"name"`
-	Password string `json:"password"`
-	Right    int    `json:"right"` // 0购房用户 1浏览 2审核 4修改 7管理员
-	// 其他信息
+	ID          int       `json:"id"`
+	Name        string    `json:"name"`
+	HeadImg     string    `json:"head_img"`
+	Sex         string    `json:"sex"`
+	Phone       string    `json:"phone"`
+	Password    string    `json:"-"`
+	Right       int       `json:"right"` // 0购房用户 1浏览 2审核 4修改 7管理员
+	StaffStatus int       `json:"staff_status"`
+	JoinTime    time.Time `json:"join_time"`
 }
 
-func (u *Staff) CheckPsw() (check bool, right int) {
+func (u *Staff) Login() (check bool, info Staff) {
 	//TODO::连接数据,进行验证
-	return true, 7
+	return true, *u
 }
 
 func (u *Staff) ChangeAuditStatus() {

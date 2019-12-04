@@ -32,17 +32,18 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	switch utype {
 	case "0": //员工登入
-		check, right := checkStaffPsw(uname, upsw)
+		check, info := checkStaffPsw(uname, upsw)
 		if check {
-			loginfo := RecordLoginStatus(uname, right)
+			loginfo := RecordLoginStatus(*info)
 			w.Write(ReturnJsonData(-1, loginfo, "员工登入成功"))
 		} else {
 			w.Write(ReturnJsonData(-1, nil, "账号或者密码错误"))
 		}
 		break
 	case "1": //用户登入
-		if checkUserPsw(uname, upsw) {
-			loginfo := RecordLoginStatus(uname, 0)
+		check, info := checkUserPsw(uname, upsw)
+		if check {
+			loginfo := RecordLoginStatus(*info)
 			w.Write(ReturnJsonData(-1, loginfo, "用户登入成功"))
 		} else {
 			w.Write(ReturnJsonData(-1, nil, "账号或者密码错误"))
@@ -70,21 +71,50 @@ func CheckToken(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func checkStaffPsw(name string, psw string) (check bool, right int) {
+func checkStaffPsw(name string, psw string) (bool, *LoginInfo) {
 	//调用数据模型
 	staff := model.Staff{
 		Name:     name,
 		Password: psw,
 	}
-	return staff.CheckPsw()
+	check, info := staff.Login()
+
+	if check {
+		logininfo := LoginInfo{
+			ID:      info.ID,
+			Name:    info.Name,
+			HeadImg: info.HeadImg,
+			Sex:     info.Sex,
+			Phone:   info.Phone,
+			Right:   info.Right,
+		}
+		return true, &logininfo
+	} else {
+		return false, nil
+	}
+
 }
 
-func checkUserPsw(name string, psw string) (check bool) {
+func checkUserPsw(name string, psw string) (bool, *LoginInfo) {
 	user := model.User{
 		Name:     name,
 		Password: psw,
 	}
-	return user.CheckPsw()
+	check, info := user.Login()
+
+	if check {
+		logininfo := LoginInfo{
+			ID:      info.ID,
+			Name:    info.Name,
+			HeadImg: info.HeadImg,
+			Sex:     info.Sex,
+			Phone:   info.Phone,
+			Right:   info.Right,
+		}
+		return true, &logininfo
+	} else {
+		return false, nil
+	}
 }
 
 // 其他操作校验token的函数
@@ -111,9 +141,17 @@ func CheckLoginStatus(name string, token string) (UserInfo *LoginInfo, check boo
 }
 
 //记录登入状态
-func RecordLoginStatus(name string, right int) LoginInfo {
-	userInfo := LoginInfo{Name: name, Right: right, Expire: time.Now().Add(5 * time.Minute)}
-	userInfo.Token = RandToken()
+func RecordLoginStatus(info LoginInfo) LoginInfo {
+	userInfo := LoginInfo{
+		ID:      info.ID,
+		Name:    info.Name,
+		HeadImg: info.HeadImg,
+		Sex:     info.Sex,
+		Phone:   info.Phone,
+		Right:   info.Right,
+		Token:   RandToken(),
+		Expire:  time.Now().Add(5 * time.Minute),
+	}
 	LoginInfos[userInfo.Token] = userInfo
 	return userInfo
 }
@@ -122,10 +160,14 @@ func RecordLoginStatus(name string, right int) LoginInfo {
 var LoginInfos = map[string]LoginInfo{}
 
 type LoginInfo struct {
-	Name   string    `json:"name"`
-	Token  string    `json:"token"`
-	Right  int       `json:"right"` // 0购房用户 1浏览 2审核 4修改 7管理员
-	Expire time.Time `json:"-"`
+	ID      int       `json:"id"`
+	Name    string    `json:"name"`
+	HeadImg string    `json:"head_img"`
+	Sex     string    `json:"sex"`
+	Phone   string    `json:"phone"`
+	Right   int       `json:"right"` // 0购房用户 1浏览 2审核 4修改 7管理员
+	Token   string    `json:"token"`
+	Expire  time.Time `json:"-"`
 }
 
 // 生成num*2位的字符串
