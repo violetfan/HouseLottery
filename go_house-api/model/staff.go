@@ -2,19 +2,7 @@ package model
 
 import "time"
 
-var StaffStore = map[string]Staff{
-	"Admin": {
-		ID:          0,
-		Name:        "Admin",
-		HeadImg:     "",
-		Sex:         "男",
-		Phone:       "11111",
-		Password:    "123456",
-		Right:       7,
-		StaffStatus: 0,
-		JoinTime:    time.Time{},
-	},
-}
+
 
 //员工数据模型
 type Staff struct {

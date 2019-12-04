@@ -2,6 +2,8 @@ package model
 
 import "time"
 
+
+
 // 购房用户数据模型
 type User struct {
 	ID           int       `json:"id"`
