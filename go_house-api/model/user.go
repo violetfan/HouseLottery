@@ -20,9 +20,30 @@ type User struct {
 	CheckStatus  int       `json:"check_status"`  //审核状态
 }
 
+//用户登陆
 func (u *User) Login() (check bool, info User) {
 	//TODO::连接数据,进行验证
 	return true, *u
+}
+
+//购房信息登记
+func (u *User) Register() (check bool, info User) {
+	return true, *u
+}
+
+//购房信息审核
+func (u *User) Check() (check bool, info User) {
+	return true, *u
+}
+
+//购房信息撤销
+func (u *User) CancelPurchase() bool {
+	return true
+}
+
+//购房登记信息修改
+func (u *User) ModifyMessage() bool {
+	return true
 }
 
 //TODO::增加
