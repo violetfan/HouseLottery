@@ -38,8 +38,12 @@ func (u *User) Login() (bool, *User) {
 }
 
 //购房信息登记
-func (u *User) Register() (check bool, info User) {
-	return true, *u
+func (u *User) Register() (bool, *User) {
+	if _, ok := UserStore[u.Name]; ok { //已登机过
+		return false, nil
+	}
+	UserStore[u.Name] = *u
+	return true, u
 }
 
 //购房信息审核

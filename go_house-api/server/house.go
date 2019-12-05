@@ -1,10 +1,11 @@
 package server
 
 import (
-	"../model"
 	"net/http"
 	"strconv"
 	"time"
+
+	"../model"
 )
 
 var HouseHandles = RouterHandles{
