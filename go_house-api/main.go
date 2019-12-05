@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./server"
+	 "./server"
 	"fmt"
 	"net/http"
 )
@@ -12,7 +12,7 @@ var (
 //main.go
 func main() {
 	Router = http.NewServeMux()
-	router.RegisterRouter(Router)
+	server.RegisterRouter(Router)
 
 	fmt.Println("Now the application expose port: http://localhost:8080")
 	http.ListenAndServe(":8080", Router)

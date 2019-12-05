@@ -1,8 +1,9 @@
 package model
 
-import "time"
-
-
+import (
+	"fmt"
+	"time"
+)
 
 // 购房用户数据模型
 type User struct {
@@ -23,9 +24,17 @@ type User struct {
 }
 
 //用户登陆
-func (u *User) Login() (check bool, info User) {
+func (u *User) Login() (bool, *User) {
 	//TODO::连接数据,进行验证
-	return true, *u
+	infos, ok := UserStore[u.Name]
+	fmt.Println("start User Login", infos)
+	if !ok {
+		return false, nil
+	}
+	if infos.Name == u.Name && infos.Password == u.Password {
+		return true, &infos
+	}
+	return false, nil
 }
 
 //购房信息登记
