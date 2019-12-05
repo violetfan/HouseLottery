@@ -15,6 +15,7 @@ func RegisterRouter(mux *http.ServeMux) {
 	// 在这里添加路由
 	handles = append(handles, LoginHandles...) //登入路由
 	handles = append(handles, UserHandles...)  //用户路由
+	handles = append(handles, HouseHandles...) //房源路由
 
 	//test
 	handles = append(handles, TestHandles...)

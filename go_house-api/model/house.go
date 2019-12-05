@@ -27,17 +27,15 @@ func (h *House) Audit() bool {
 
 //发布
 func (h *House) Issue() (bool, *House) {
-	var newHouse House
-	newHouse = *h
-	HouseStore[h.BuildID] = newHouse
-	return true, &newHouse
+	//TODO::验证信息是否在正确,是否存在同名BuildID
+	HouseStore[h.BuildID] = *h
+	return true, h
 }
 
 //获取房源
-func (h *House) GetHouseList() []string {
-	var houseList []string
-	for k := range HouseStore {
-		houseList = append(houseList, k)
+func (h *House) GetHouseList() (HouseList []*House) {
+	for _, v := range HouseStore {
+		HouseList = append(HouseList, &v)
 	}
-	return houseList
+	return HouseList
 }
