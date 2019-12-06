@@ -1,8 +1,9 @@
 package model
 
-import "time"
-
-
+import (
+	"fmt"
+	"time"
+)
 
 //员工数据模型
 type Staff struct {
@@ -17,33 +18,43 @@ type Staff struct {
 	JoinTime    time.Time `json:"join_time"`
 }
 
-func (u *Staff) Login() (bool, *Staff) {
-	//TODO::连接数据,进行验证
-	info, ok := StaffStore[u.Name]
-
-	if !ok {
-		return false, nil
+//员工登录
+func (u *Staff) Login() (bool, *Staff){
+	//TODO::连接数据，进行验证
+	infos, ok := StaffStore[u.Name]
+	fmt.Println("start Staff Login",infos)
+	if !ok{
+		return false,nil
 	}
-	if info.Name == u.Name && info.Password == u.Password {
-		return true, &info
+	if infos.Name == u.Name && infos.Password == u.Password{
+		return true,&infos
 	}
-
-	return false, nil
+	return false,nil
 }
+
 
 func (u *Staff) ChangeAuditStatus() {
 
 }
 
-//增加用户
-func (u *Staff) AddUser() bool {
-
-	return true
+//注册员工
+func (u *Staff) Register() (bool,*Staff) {
+	if _, ok := StaffStore[u.Name];ok{
+		//已注册过
+		return false,nil
+	}
+	StaffStore[u.Name] = *u
+	return true,u
 }
 
-//删除用户
-func (u *Staff) DelUser() bool {
-	return true
+//删除员工
+func (u *Staff) DelStaff() bool {
+	if _,ok := StaffStore[u.Name];ok{
+		//已注册过
+		delete(StaffStore,u.Name)
+		return true
+	}
+	return false
 }
 
 //修改密码
