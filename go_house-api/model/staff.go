@@ -57,6 +57,15 @@ func (u *Staff) DelStaff() bool {
 	return false
 }
 
+//员工登记信息修改
+func (u *Staff) StaffModifyMessage() (bool, *Staff) {
+	if _, ok := StaffStore[u.Name]; ok { //已登记过
+		StaffStore[u.Name] = *u
+		return true, u
+	}
+	return false, nil
+}
+
 //修改密码
 func (u *Staff) ChangePsw() bool {
 	return true
