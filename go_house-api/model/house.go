@@ -28,7 +28,7 @@ func (h *House) Audit() bool {
 //发布
 func (h *House) Issue() (bool, *House) {
 	//TODO::验证信息是否在正确,是否存在同名  BuildID ? BuildName ,统一一下主键
-	HouseStore[h.BuildID] = *h
+	HouseStore[h.BuildName] = *h
 	return true, h
 }
 
@@ -38,4 +38,13 @@ func (h *House) GetHouseList() (HouseList []*House) {
 		HouseList = append(HouseList, &v)
 	}
 	return HouseList
+}
+
+//修改房屋信息
+func (h *House) ModifyHouseMessage() (bool, *House) {
+	if _, ok := HouseStore[h.BuildName]; ok { //已登记过
+		HouseStore[h.BuildName] = *h
+		return true, h
+	}
+	return false, h
 }
