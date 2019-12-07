@@ -25,6 +25,10 @@ var UserHandles = RouterHandles{
 		Patten: "/user/delete", //删除用户信息
 		Func:   UserDelete,
 	},
+	{
+		Patten: "/user/list", //获取用户列表
+		Func:   GetUserList,
+	},
 }
 
 func UserRegister(w http.ResponseWriter, r *http.Request) {
@@ -211,4 +215,19 @@ func UserDelete(w http.ResponseWriter, r *http.Request) {
 	} else {
 		w.Write(ReturnJsonData(-1, nil, "err"))
 	}
+}
+
+//获取用户列表
+func GetUserList(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*") // 允许跨域
+	w.Header().Add("Content-type", "application/json") // 设置返回格式
+
+	getParam := r.URL.Query() //获取URL,后面的查询参数
+
+	if len(getParam["name"]) <= 0 || len(getParam["token"]) <= 0 {
+		w.Write(ReturnJsonData(-1, nil, "参数不齐全"))
+		return
+	}
+
+	w.Write(ReturnJsonData(0, model.User{}.GetList(), "ok"))
 }

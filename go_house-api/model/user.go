@@ -69,7 +69,9 @@ func (u *User) ModifyMessage() (bool, *User) {
 	return false, nil
 }
 
-//TODO::增加
-func (u *User) HouseRegister() {
-
+func (u *User) GetList() (UserList []*User) {
+	for _, v := range UserStore {
+		UserList = append(UserList, &v)
+	}
+	return UserList
 }
