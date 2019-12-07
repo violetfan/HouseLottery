@@ -19,6 +19,8 @@ var HouseHandles = RouterHandles{
 }
 
 func IssueHouse(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Content-type", "application/json")
 
 	if r.Method != "POST" {
 		w.Write(ReturnJsonData(-1, nil, "请求方式错误"))
@@ -126,6 +128,9 @@ func IssueHouse(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetHouseList(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Content-type", "application/json")
+
 	house := new(model.House)
 	w.Write(ReturnJsonData(-0, house.GetHouseList(), "ok"))
 }

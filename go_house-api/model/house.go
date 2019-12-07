@@ -27,7 +27,7 @@ func (h *House) Audit() bool {
 
 //发布
 func (h *House) Issue() (bool, *House) {
-	//TODO::验证信息是否在正确,是否存在同名  BuildID ? BuildName ,统一一下主键
+	//TODO::验证信息是否存在同名  BuildID ? BuildName ,统一一下主键
 	HouseStore[h.BuildID] = *h
 	return true, h
 }

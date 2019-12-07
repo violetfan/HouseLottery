@@ -20,6 +20,9 @@ var UserHandles = RouterHandles{
 }
 
 func UserRegister(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Content-type", "application/json")
+
 	if r.Method != "POST" {
 		w.Write(ReturnJsonData(-1, nil, "请求方式错误"))
 		return

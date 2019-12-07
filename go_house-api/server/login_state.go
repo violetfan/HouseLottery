@@ -19,12 +19,16 @@ var LoginHandles = RouterHandles{
 	},
 }
 
-
 //http://localhost:8080/login?type=0&name=Admin&password=123456
 func Login(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Content-type", "application/json")
+
 	getParam := r.URL.Query() //获取get参数
 
-	if len(getParam["name"]) <= 0 || len(getParam["password"]) <= 0 || len(getParam["type"]) <= 0 {
+	if len(getParam["name"]) <= 0 ||
+		len(getParam["password"]) <= 0 ||
+		len(getParam["type"]) <= 0 {
 		w.Write(ReturnJsonData(-1, nil, "参数不齐全"))
 		return
 	}
@@ -34,7 +38,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	utype := getParam["type"][0] //0用户 1员工
 
 	switch utype {
-	case "0": //员工登入
+	case "1": //员工登入
 		check, info := checkStaffPsw(uname, upsw)
 		if check {
 			loginfo := RecordLoginStatus(*info)
@@ -43,7 +47,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			w.Write(ReturnJsonData(-1, nil, "账号或者密码错误"))
 		}
 		break
-	case "1": //用户登入
+	case "0": //用户登入
 		check, info := checkUserPsw(uname, upsw)
 		if check {
 			loginfo := RecordLoginStatus(*info)
@@ -58,11 +62,13 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func CheckToken(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	getParam := r.URL.Query() //获取get参数
 	if len(getParam["name"]) <= 0 || len(getParam["token"]) <= 0 {
 		w.Write(ReturnJsonData(-1, nil, "参数不齐全"))
 		return
 	}
+
 	uname := getParam["name"][0]
 	utoken := getParam["token"][0]
 

@@ -1,7 +1,7 @@
 package main
 
 import (
-	 "./server"
+	"./server"
 	"fmt"
 	"net/http"
 )
@@ -9,6 +9,7 @@ import (
 var (
 	Router *http.ServeMux
 )
+
 //main.go
 func main() {
 	Router = http.NewServeMux()
