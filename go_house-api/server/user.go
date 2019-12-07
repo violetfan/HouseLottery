@@ -9,10 +9,10 @@ import (
 )
 
 var UserHandles = RouterHandles{
-	{
-		Patten: "/user/login", //用户登陆
-		Func:   ChangeUserAuditStatus,
-	},
+	//{
+	//	Patten: "/user/login", //用户登陆
+	//	Func:   ChangeUserAuditStatus,
+	//},
 	{
 		Patten: "/user/register", //用户注册
 		Func:   UserRegister,
