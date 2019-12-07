@@ -228,5 +228,6 @@ func GetStaffList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write(ReturnJsonData(0, model.Staff{}.GetList(), "ok"))
+	staff := model.Staff{}
+	w.Write(ReturnJsonData(0, staff.GetList(), "ok"))
 }

@@ -229,5 +229,6 @@ func GetUserList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write(ReturnJsonData(0, model.User{}.GetList(), "ok"))
+	user := model.User{}
+	w.Write(ReturnJsonData(0, user.GetList(), "ok"))
 }
