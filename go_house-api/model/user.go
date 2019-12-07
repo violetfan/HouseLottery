@@ -39,7 +39,7 @@ func (u *User) Login() (bool, *User) {
 
 //购房信息登记
 func (u *User) Register() (bool, *User) {
-	if _, ok := UserStore[u.Name]; ok { //已登机过
+	if _, ok := UserStore[u.Name]; ok { //已登记过
 		return false, nil
 	}
 	UserStore[u.Name] = *u
@@ -53,12 +53,20 @@ func (u *User) Check() (check bool, info User) {
 
 //购房信息撤销
 func (u *User) CancelPurchase() bool {
-	return true
+	if _, ok := UserStore[u.Name]; ok { //已登记过
+		delete(UserStore, u.Name)
+		return true
+	}
+	return false
 }
 
 //购房登记信息修改
-func (u *User) ModifyMessage() bool {
-	return true
+func (u *User) ModifyMessage() (bool, *User) {
+	if _, ok := UserStore[u.Name]; ok { //已登记过
+		UserStore[u.Name] = *u
+		return true, u
+	}
+	return false, nil
 }
 
 //TODO::增加

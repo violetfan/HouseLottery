@@ -10,18 +10,26 @@ import (
 
 var UserHandles = RouterHandles{
 	{
-		Patten: "/user/login",
+		Patten: "/user/login", //用户登陆
 		Func:   ChangeUserAuditStatus,
 	},
 	{
-		Patten: "/user/register",
+		Patten: "/user/register", //用户注册
 		Func:   UserRegister,
+	},
+	{
+		Patten: "/user/modify", //修改用户信息
+		Func:   UserMessageModify,
+	},
+	{
+		Patten: "/user/delete", //删除用户信息
+		Func:   UserDelete,
 	},
 }
 
 func UserRegister(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Access-Control-Allow-Origin", "*")
-	w.Header().Add("Content-type", "application/json")
+	w.Header().Add("Access-Control-Allow-Origin", "*") // 允许跨域
+	w.Header().Add("Content-type", "application/json") // 设置返回格式
 
 	if r.Method != "POST" {
 		w.Write(ReturnJsonData(-1, nil, "请求方式错误"))
@@ -120,10 +128,87 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func CheckUserPsw() {
+func ChangeUserAuditStatus(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*") // 允许跨域
+	w.Header().Add("Content-type", "application/json") // 设置返回格式
 
 }
 
-func ChangeUserAuditStatus(w http.ResponseWriter, r *http.Request) {
+//修改用户信息
+func UserMessageModify(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*") // 允许跨域
+	w.Header().Add("Content-type", "application/json") // 设置返回格式
 
+	if r.Method != "POST" {
+		w.Write(ReturnJsonData(-1, nil, "请求方式错误"))
+		return
+	}
+
+	getParam := r.URL.Query() //获取URL,后面的查询参数
+
+	if len(getParam["name"]) <= 0 || len(getParam["token"]) <= 0 {
+		w.Write(ReturnJsonData(-1, nil, "参数不齐全"))
+		return
+	}
+	err := r.ParseForm() //解析POST参数
+	if err != nil {
+		w.Write(ReturnJsonData(-1, nil, "表单内容错误"))
+		return
+	}
+	user := new(model.User)
+
+	user.ID, _ = strconv.Atoi(r.PostForm["ID"][0])
+	user.Name = r.PostForm["Name"][0]
+	user.HeadImg = r.PostForm["HeadImg"][0]
+	user.Sex = r.PostForm["Sex"][0]
+	user.Phone = r.PostForm["Phone"][0]
+	user.Password = r.PostForm["Password"][0]
+	user.Right, _ = strconv.Atoi(r.PostForm["Right"][0])
+	var RTime int64
+	RTime, _ = strconv.ParseInt(r.PostForm["RegisterTime"][0], 10, 64)
+	user.RegisterTime = time.Unix(RTime, 0)
+	user.Status, _ = strconv.Atoi(r.PostForm["Status"][0])
+	user.HouseType = r.PostForm["HouseType"][0]
+	user.PurposeHouse = r.PostForm["PurposeHouse"][0]
+	user.IdentityType = r.PostForm["IdentityType"][0]
+	user.IdentityNum = r.PostForm["IdentityNum"][0]
+	user.CheckStatus, _ = strconv.Atoi(r.PostForm["CheckStatus"][0])
+
+	ok, info := user.ModifyMessage()
+	if ok {
+		w.Write(ReturnJsonData(0, info, "ok"))
+	} else {
+		w.Write(ReturnJsonData(-1, nil, "err"))
+	}
+}
+
+//删除用户信息
+func UserDelete(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*") // 允许跨域
+	w.Header().Add("Content-type", "application/json") // 设置返回格式
+
+	if r.Method != "POST" {
+		w.Write(ReturnJsonData(-1, nil, "请求方式错误"))
+		return
+	}
+
+	getParam := r.URL.Query() //获取URL,后面的查询参数
+
+	if len(getParam["name"]) <= 0 || len(getParam["token"]) <= 0 {
+		w.Write(ReturnJsonData(-1, nil, "参数不齐全"))
+		return
+	}
+	err := r.ParseForm() //解析POST参数
+	if err != nil {
+		w.Write(ReturnJsonData(-1, nil, "表单内容错误"))
+		return
+	}
+	user := new(model.User)
+	user.Name = r.PostForm["Name"][0]
+	ok := user.CancelPurchase()
+	if ok {
+		w.Write(ReturnJsonData(0, ok, "ok"))
+	} else {
+		w.Write(ReturnJsonData(-1, nil, "err"))
+	}
 }

@@ -21,8 +21,8 @@ var LoginHandles = RouterHandles{
 
 //http://localhost:8080/login?type=0&name=Admin&password=123456
 func Login(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Access-Control-Allow-Origin", "*")
-	w.Header().Add("Content-type", "application/json")
+	w.Header().Add("Access-Control-Allow-Origin", "*") // 允许跨域
+	w.Header().Add("Content-type", "application/json") // 设置返回格式
 
 	getParam := r.URL.Query() //获取get参数
 
@@ -62,7 +62,9 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func CheckToken(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Access-Control-Allow-Origin", "*") // 允许跨域
+	w.Header().Add("Content-type", "application/json") // 设置返回格式
+
 	getParam := r.URL.Query() //获取get参数
 	if len(getParam["name"]) <= 0 || len(getParam["token"]) <= 0 {
 		w.Write(ReturnJsonData(-1, nil, "参数不齐全"))

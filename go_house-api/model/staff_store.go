@@ -12,7 +12,7 @@ var StaffStore = map[string]Staff{
 		Phone:       "11111",
 		Password:    "123456",
 		Right:       7,
-		StaffStatus: 0,
+		Status: 0,
 		JoinTime:    time.Unix(1462838400,0),  //员工加入时间   2016/5/10
 	},
 	"Leonie": {
@@ -23,7 +23,7 @@ var StaffStore = map[string]Staff{
 		Phone:       "13812341234",
 		Password:    "147852",
 		Right:       1,
-		StaffStatus: 1,
+		Status: 1,
 		JoinTime:    time.Unix(1476057600,0),   //2016/10/10
 	},
 	"David": {
@@ -34,7 +34,7 @@ var StaffStore = map[string]Staff{
 		Phone:       "18236981254",
 		Password:    "951357",
 		Right:       4,
-		StaffStatus: 1,
+		Status: 1,
 		JoinTime:    time.Unix(1427068800,0),   //2015/3/23
 	},
 	"Tim": {
@@ -45,7 +45,7 @@ var StaffStore = map[string]Staff{
 		Phone:       "18275369852",
 		Password:    "823975",
 		Right:       4,
-		StaffStatus: 0,
+		Status: 0,
 		JoinTime:    time.Unix(1409184000,0),  //2014/8/28
 	},
 	"Mia": {
@@ -56,7 +56,7 @@ var StaffStore = map[string]Staff{
 		Phone:       "15675894562",
 		Password:    "856742",
 		Right:       2,
-		StaffStatus: 0,
+		Status: 0,
 		JoinTime:    time.Unix(1464134400,0),  //2016/5/25
 	},
 }
