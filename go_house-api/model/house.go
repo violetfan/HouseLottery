@@ -17,7 +17,7 @@ type House struct {
 	ReceptionStime   time.Time `json:"reception_stime"`
 	ReceptionEndtime time.Time `json:"reception_endtime"`
 	ReceptionSite    string    `json:"reception_site"`
-	LotteryData      time.Time `json:"lottery_data"`
+	LotteryDate      time.Time `json:"lottery_data"`
 }
 
 //审核
@@ -33,9 +33,9 @@ func (h *House) Issue() (bool, *House) {
 }
 
 //获取房源
-func (h *House) GetHouseList() (HouseList []*House) {
+func (h *House) GetHouseList() (HouseList []House) {
 	for _, v := range HouseStore {
-		HouseList = append(HouseList, &v)
+		HouseList = append(HouseList, v)
 	}
 	return HouseList
 }

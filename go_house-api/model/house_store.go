@@ -17,7 +17,7 @@ var HouseStore = map[string]House{
 		ReceptionStime:   time.Unix(1575936000, 0), //现场接受资料开始时间   //2019/12/10 8:00:00
 		ReceptionEndtime: time.Unix(1575972000, 0), //现场接受资料结束时间   //2019/12/10 18:00:00
 		ReceptionSite:    "长安-航天基地",                //现场接受资料地点
-		LotteryData:      time.Unix(1576116000, 0), //摇号日期   2019/12/12 10:00:00
+		LotteryDate:      time.Unix(1576116000, 0), //摇号日期   2019/12/12 10:00:00
 	},
 	"天诚蔷薇公馆": {
 		BuildID:          "201905090",              //楼盘号
@@ -33,7 +33,7 @@ var HouseStore = map[string]House{
 		ReceptionStime:   time.Unix(1576375200, 0), //现场接受资料开始时间  2019/12/15
 		ReceptionEndtime: time.Unix(1576461600, 0), //现场接受资料结束时间
 		ReceptionSite:    "辛王路与启源二路十字向东300米",       //现场接受资料地点
-		LotteryData:      time.Unix(1576634400, 0), //摇号日期   2019/12/18
+		LotteryDate:      time.Unix(1576634400, 0), //摇号日期   2019/12/18
 	},
 	"远洋御山水": {
 		BuildID:          "201913500",              //楼盘号
@@ -49,6 +49,6 @@ var HouseStore = map[string]House{
 		ReceptionStime:   time.Unix(1576627200, 0), //现场接受资料开始时间  2019/12/18
 		ReceptionEndtime: time.Unix(1576807200, 0), //现场接受资料结束时间
 		ReceptionSite:    "北辰大道",                   //现场接受资料地点
-		LotteryData:      time.Unix(1577239200, 0), //摇号日期   2019/12/25
+		LotteryDate:      time.Unix(1577239200, 0), //摇号日期   2019/12/25
 	},
 }

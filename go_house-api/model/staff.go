@@ -31,9 +31,9 @@ func (u *Staff) Login() (bool, *Staff) {
 	return false, nil
 }
 
-func (u *Staff) GetList() (StaffList []*Staff) {
+func (u *Staff) GetList() (StaffList []Staff) {
 	for _, v := range StaffStore {
-		StaffList = append(StaffList, &v)
+		StaffList = append(StaffList, v)
 	}
 	return StaffList
 }

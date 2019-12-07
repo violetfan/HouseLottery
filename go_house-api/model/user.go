@@ -69,9 +69,9 @@ func (u *User) ModifyMessage() (bool, *User) {
 	return false, nil
 }
 
-func (u *User) GetList() (UserList []*User) {
+func (u *User) GetList() (UserList []User) {
 	for _, v := range UserStore {
-		UserList = append(UserList, &v)
+		UserList = append(UserList, v)
 	}
 	return UserList
 }
