@@ -47,7 +47,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		check, info := checkStaffPsw(uname, upsw)
 		if check {
 			loginfo := RecordLoginStatus(*info)
-			w.Write(ReturnJsonData(-1, loginfo, "员工登入成功"))
+			w.Write(ReturnJsonData(0, loginfo, "员工登入成功"))
 		} else {
 			w.Write(ReturnJsonData(-1, nil, "账号或者密码错误"))
 		}
@@ -56,7 +56,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		check, info := checkUserPsw(uname, upsw)
 		if check {
 			loginfo := RecordLoginStatus(*info)
-			w.Write(ReturnJsonData(-1, loginfo, "用户登入成功"))
+			w.Write(ReturnJsonData(0, loginfo, "用户登入成功"))
 		} else {
 			w.Write(ReturnJsonData(-1, nil, "账号或者密码错误"))
 		}
