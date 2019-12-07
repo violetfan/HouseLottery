@@ -13,9 +13,14 @@ var LoginHandles = RouterHandles{
 	{
 		Patten: "/login",
 		Func:   Login,
-	}, {
+	},
+	{
 		Patten: "/checktoken",
 		Func:   CheckToken,
+	},
+	{
+		Patten: "/loginout",
+		Func:   LoginOut,
 	},
 }
 
@@ -79,6 +84,27 @@ func CheckToken(w http.ResponseWriter, r *http.Request) {
 		w.Write(ReturnJsonData(0, info, "ok"))
 	} else {
 		w.Write(ReturnJsonData(-2, info, "token错误,或已过期"))
+	}
+}
+
+func LoginOut(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*") // 允许跨域
+	w.Header().Add("Content-type", "application/json") // 设置返回格式
+
+	getParam := r.URL.Query() //获取get参数
+	if len(getParam["name"]) <= 0 || len(getParam["token"]) <= 0 {
+		w.Write(ReturnJsonData(-1, nil, "参数不齐全"))
+		return
+	}
+
+	uname := getParam["name"][0]
+	utoken := getParam["token"][0]
+
+	ok := DelLoginStatus(uname, utoken)
+	if ok {
+		w.Write(ReturnJsonData(0, nil, "ok"))
+	} else {
+		w.Write(ReturnJsonData(-2, nil, "退出状态失败"))
 	}
 }
 
@@ -148,6 +174,27 @@ func CheckLoginStatus(name string, token string) (UserInfo *LoginInfo, check boo
 		}
 	} else {
 		return nil, false
+	}
+}
+
+func DelLoginStatus(name string, token string) bool {
+	userInfo, ok := LoginInfos[token]
+	if ok { //有记录
+		if name != userInfo.Name {
+			//校验用户名与token不符
+			return false
+		}
+		if userInfo.Expire.Unix() <= time.Now().Unix() {
+			//过期
+			delete(LoginInfos, token)
+			return false
+		} else {
+			//退出
+			delete(LoginInfos, token)
+			return true
+		}
+	} else {
+		return false
 	}
 }
 

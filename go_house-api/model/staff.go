@@ -31,8 +31,11 @@ func (u *Staff) Login() (bool, *Staff) {
 	return false, nil
 }
 
-func (u *Staff) ChangeAuditStatus() {
-
+func (u *Staff) GetList() (StaffList []*Staff) {
+	for _, v := range StaffStore {
+		StaffList = append(StaffList, &v)
+	}
+	return StaffList
 }
 
 //注册员工

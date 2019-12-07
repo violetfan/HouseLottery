@@ -14,7 +14,7 @@ var HouseHandles = RouterHandles{
 		Func:   IssueHouse,
 	},
 	{
-		Patten: "/house/getlist",
+		Patten: "/house/list",
 		Func:   GetHouseList,
 	},
 	{
