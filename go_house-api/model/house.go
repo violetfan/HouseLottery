@@ -17,7 +17,7 @@ type House struct {
 	ReceptionStime   time.Time `json:"reception_stime"`
 	ReceptionEndtime time.Time `json:"reception_endtime"`
 	ReceptionSite    string    `json:"reception_site"`
-	LotteryDate      time.Time `json:"lottery_data"`
+	LotteryDate      time.Time `json:"lottery_date"`
 }
 
 //审核

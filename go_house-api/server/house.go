@@ -61,7 +61,7 @@ func IssueHouse(w http.ResponseWriter, r *http.Request) {
 		IntentEndtime    int64 = 0
 		ReceptionStime   int64 = 0
 		ReceptionEndtime int64 = 0
-		LotteryData      int64 = 0
+		LotteryDate      int64 = 0
 	)
 
 	// 必须要的信息
@@ -101,8 +101,8 @@ func IssueHouse(w http.ResponseWriter, r *http.Request) {
 	if len(r.PostForm["ReceptionEndtime"]) > 0 {
 		ReceptionEndtime, _ = strconv.ParseInt(r.PostForm["ReceptionEndtime"][0], 10, 64)
 	}
-	if len(r.PostForm["LotteryData"]) > 0 {
-		LotteryData, _ = strconv.ParseInt(r.PostForm["LotteryData"][0], 10, 64)
+	if len(r.PostForm["LotteryDate"]) > 0 {
+		LotteryDate, _ = strconv.ParseInt(r.PostForm["LotteryDate"][0], 10, 64)
 	}
 	if len(r.PostForm["ReceptionSite"]) > 0 {
 		ReceptionSite = r.PostForm["ReceptionSite"][0]
@@ -122,7 +122,7 @@ func IssueHouse(w http.ResponseWriter, r *http.Request) {
 		ReceptionStime:   time.Unix(ReceptionStime, 0),
 		ReceptionEndtime: time.Unix(ReceptionEndtime, 0),
 		ReceptionSite:    ReceptionSite,
-		LotteryData:      time.Unix(LotteryData, 0),
+		LotteryDate:      time.Unix(LotteryDate, 0),
 	}
 
 	ok, info := house.Issue()
@@ -184,8 +184,8 @@ func ModifyHouse(w http.ResponseWriter, r *http.Request) {
 	RETime, _ := strconv.ParseInt(r.PostForm["ReceptionEndtime"][0], 10, 64)
 	house.ReceptionEndtime = time.Unix(RETime, 0)
 	house.ReceptionSite = r.PostForm["ReceptionSite"][0]
-	HLTime, _ := strconv.ParseInt(r.PostForm["LotteryData"][0], 10, 64)
-	house.LotteryData = time.Unix(HLTime, 0)
+	HLTime, _ := strconv.ParseInt(r.PostForm["LotteryDate"][0], 10, 64)
+	house.LotteryDate = time.Unix(HLTime, 0)
 	ok, info := house.ModifyHouseMessage()
 	if ok {
 		w.Write(ReturnJsonData(0, info, "ok"))
