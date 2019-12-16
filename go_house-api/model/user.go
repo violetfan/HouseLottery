@@ -75,3 +75,12 @@ func (u *User) GetList() (UserList []User) {
 	}
 	return UserList
 }
+
+func (u *User) GetInfo() (UserInfo User) {
+	UserInfo, check := UserStore[u.Name]
+	if check {
+		return UserInfo
+	} else {
+		return User{}
+	}
+}

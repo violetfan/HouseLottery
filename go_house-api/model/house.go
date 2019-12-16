@@ -11,6 +11,7 @@ type House struct {
 	Enterprise       string    `json:"enterprise"`
 	Introduce        string    `json:"introudce"`
 	Hotline          string    `json:"hotline"`
+	PicView          string    `json:"pic_view"`
 	PresellNumber    string    `json:"presell_number"`
 	IntentStime      time.Time `json:"intent_stime"`
 	IntentEndtime    time.Time `json:"intent_endtime"`

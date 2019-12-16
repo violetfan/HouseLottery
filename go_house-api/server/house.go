@@ -56,6 +56,7 @@ func IssueHouse(w http.ResponseWriter, r *http.Request) {
 		PresellNumber          = "-"
 		ReceptionSite          = "暂无"
 		ChooseStime      int64 = 0
+		PicView                = ""
 		ChooseEndtime    int64 = 0
 		IntentStime      int64 = 0
 		IntentEndtime    int64 = 0
@@ -107,6 +108,9 @@ func IssueHouse(w http.ResponseWriter, r *http.Request) {
 	if len(r.PostForm["ReceptionSite"]) > 0 {
 		ReceptionSite = r.PostForm["ReceptionSite"][0]
 	}
+	if len(r.PostForm["PicView"]) > 0 {
+		PicView = r.PostForm["PicView"][0]
+	}
 
 	house := model.House{
 		BuildID:          BuildID,
@@ -116,6 +120,7 @@ func IssueHouse(w http.ResponseWriter, r *http.Request) {
 		Enterprise:       Enterprise,
 		Introduce:        Introduce,
 		Hotline:          Hotline,
+		PicView:          PicView,
 		PresellNumber:    PresellNumber,
 		IntentStime:      time.Unix(IntentStime, 0),
 		IntentEndtime:    time.Unix(IntentEndtime, 0),

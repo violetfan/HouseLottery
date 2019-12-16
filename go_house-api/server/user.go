@@ -29,6 +29,10 @@ var UserHandles = RouterHandles{
 		Patten: "/user/list", //获取用户列表
 		Func:   GetUserList,
 	},
+	{
+		Patten: "/user/info", //获取用户列表
+		Func:   GetUserInfo,
+	},
 }
 
 func UserRegister(w http.ResponseWriter, r *http.Request) {
@@ -40,12 +44,6 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	getParam := r.URL.Query() //获取URL,后面的查询参数
-
-	if len(getParam["name"]) <= 0 || len(getParam["token"]) <= 0 {
-		w.Write(ReturnJsonData(-1, nil, "参数不齐全"))
-		return
-	}
 	err := r.ParseForm() //解析POST参数
 	if err != nil {
 		w.Write(ReturnJsonData(-1, nil, "表单内容错误"))
@@ -231,4 +229,22 @@ func GetUserList(w http.ResponseWriter, r *http.Request) {
 
 	user := model.User{}
 	w.Write(ReturnJsonData(0, user.GetList(), "ok"))
+}
+
+//获取用户信息
+func GetUserInfo(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*") // 允许跨域
+	w.Header().Add("Content-type", "application/json") // 设置返回格式
+
+	getParam := r.URL.Query() //获取URL,后面的查询参数
+
+	if len(getParam["name"]) <= 0 || len(getParam["token"]) <= 0 {
+		w.Write(ReturnJsonData(-1, nil, "参数不齐全"))
+		return
+	}
+
+	user := model.User{
+		Name: getParam["name"][0],
+	}
+	w.Write(ReturnJsonData(0, user.GetInfo(), "ok"))
 }
