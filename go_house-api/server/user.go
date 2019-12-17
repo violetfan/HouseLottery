@@ -36,8 +36,12 @@ var UserHandles = RouterHandles{
 }
 
 func UserRegister(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Access-Control-Allow-Origin", "*") // 允许跨域
 	w.Header().Add("Content-type", "application/json") // 设置返回格式
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Access-Control-Allow-Credentials", "true")
+	w.Header().Add("Access-Control-Allow-Methods", "*")
+	w.Header().Add("Access-Control-Allow-Headers", "Content-Type,Access-Token")
+	w.Header().Add("Access-Control-Expose-Headers", "*")
 
 	if r.Method != "POST" {
 		w.Write(ReturnJsonData(-1, nil, "请求方式错误"))
@@ -69,20 +73,20 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 	)
 
 	// 必须要的信息
-	if len(r.PostForm["ID"]) > 0 &&
-		len(r.PostForm["Name"]) > 0 &&
-		len(r.PostForm["Sex"]) > 0 &&
-		len(r.PostForm["Phone"]) > 0 &&
-		len(r.PostForm["Password"]) > 0 &&
-		len(r.PostForm["IdentityType"]) > 0 &&
-		len(r.PostForm["IdentityNum"]) > 0 {
-		ID, _ = strconv.Atoi(r.PostForm["ID"][0])
-		Name = r.PostForm["Name"][0]
-		Sex = r.PostForm["Sex"][0]
-		Phone = r.PostForm["Phone"][0]
-		Password = r.PostForm["Password"][0]
-		IdentityType = r.PostForm["IdentityType"][0]
-		IdentityNum = r.PostForm["IdentityNum"][0]
+	if len(r.PostForm["id"]) > 0 &&
+		len(r.PostForm["name"]) > 0 &&
+		len(r.PostForm["sex"]) > 0 &&
+		len(r.PostForm["phone"]) > 0 &&
+		len(r.PostForm["password"]) > 0 &&
+		len(r.PostForm["identity_type"]) > 0 &&
+		len(r.PostForm["identity_num"]) > 0 {
+		ID, _ = strconv.Atoi(r.PostForm["id"][0])
+		Name = r.PostForm["name"][0]
+		Sex = r.PostForm["sex"][0]
+		Phone = r.PostForm["phone"][0]
+		Password = r.PostForm["password"][0]
+		IdentityType = r.PostForm["identity_type"][0]
+		IdentityNum = r.PostForm["identity_num"][0]
 	} else {
 		w.Write(ReturnJsonData(-1, nil, "参数不完整"))
 		return
@@ -91,20 +95,20 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 	if len(r.PostForm["HeadImg"]) > 0 {
 		HeadImg = r.PostForm["HeadImg"][0]
 	}
-	if len(r.PostForm["Status"]) > 0 {
-		Status, _ = strconv.Atoi(r.PostForm["Status"][0])
+	if len(r.PostForm["status"]) > 0 {
+		Status, _ = strconv.Atoi(r.PostForm["status"][0])
 	}
-	if len(r.PostForm["HouseType"]) > 0 {
-		HouseType = r.PostForm["HouseType"][0]
+	if len(r.PostForm["house_type"]) > 0 {
+		HouseType = r.PostForm["house_type"][0]
 	}
-	if len(r.PostForm["PurposeHouse"]) > 0 {
-		PurposeHouse = r.PostForm["PurposeHouse"][0]
+	if len(r.PostForm["purpose_house"]) > 0 {
+		PurposeHouse = r.PostForm["purpose_house"][0]
 	}
-	if len(r.PostForm["CheckStatus"]) > 0 {
-		CheckStatus, _ = strconv.Atoi(r.PostForm["CheckStatus"][0])
+	if len(r.PostForm["check_status"]) > 0 {
+		CheckStatus, _ = strconv.Atoi(r.PostForm["check_status"][0])
 	}
-	if len(r.PostForm["RegisterTime"]) > 0 {
-		RegisterTime, _ = strconv.ParseInt(r.PostForm["RegisterTime"][0], 10, 64)
+	if len(r.PostForm["register_time"]) > 0 {
+		RegisterTime, _ = strconv.ParseInt(r.PostForm["register_time"][0], 10, 64)
 	}
 	user := model.User{
 		ID:           ID,
@@ -122,9 +126,10 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 		IdentityNum:  IdentityNum,
 		CheckStatus:  CheckStatus,
 	}
-	ok, info := user.Register()
+	ok := user.Register()
+	println(ok)
 	if ok {
-		w.Write(ReturnJsonData(0, info, "ok"))
+		w.Write(ReturnJsonData(0, nil, "ok"))
 	} else {
 		w.Write(ReturnJsonData(-1, nil, "err"))
 	}

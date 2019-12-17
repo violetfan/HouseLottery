@@ -9,8 +9,14 @@ type ReturnType struct {
 }
 
 func Data2json(data interface{}) []byte {
-	bytes, _ := json.Marshal(data)
-	return bytes
+	bytes, err := json.Marshal(data)
+	if err != nil {
+		println(err.Error())
+		return []byte("")
+	} else {
+		return bytes
+	}
+
 }
 
 func ReturnJsonData(errCode int, data interface{}, msg string) []byte {

@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -21,12 +22,20 @@ var HouseHandles = RouterHandles{
 		Patten: "/house/modify",
 		Func:   ModifyHouse,
 	},
+	{
+		Patten: "/house/del",
+		Func:   DelHouse,
+	},
 }
 
 //发布房源
 func IssueHouse(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Access-Control-Allow-Origin", "*") // 允许跨域
 	w.Header().Add("Content-type", "application/json") // 设置返回格式
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Access-Control-Allow-Credentials", "true")
+	w.Header().Add("Access-Control-Allow-Methods", "*")
+	w.Header().Add("Access-Control-Allow-Headers", "Content-Type,Access-Token")
+	w.Header().Add("Access-Control-Expose-Headers", "*")
 
 	if r.Method != "POST" {
 		w.Write(ReturnJsonData(-1, nil, "请求方式错误"))
@@ -64,52 +73,50 @@ func IssueHouse(w http.ResponseWriter, r *http.Request) {
 		ReceptionEndtime int64 = 0
 		LotteryDate      int64 = 0
 	)
-
 	// 必须要的信息
-	if len(r.PostForm["BuildID"]) > 0 &&
-		len(r.PostForm["BuildName"]) > 0 &&
-		len(r.PostForm["Introduce"]) > 0 &&
-		len(r.PostForm["Enterprise"]) > 0 &&
-		len(r.PostForm["Hotline"]) > 0 &&
-		len(r.PostForm["PresellNumber"]) > 0 {
-		BuildID = r.PostForm["BuildID"][0]
-		BuildName = r.PostForm["BuildName"][0]
-		Introduce = r.PostForm["Introduce"][0]
-		Enterprise = r.PostForm["Enterprise"][0]
-		Hotline = r.PostForm["Hotline"][0]
-		PresellNumber = r.PostForm["PresellNumber"][0]
+	if len(r.PostForm["build_id"]) > 0 &&
+		len(r.PostForm["build_name"]) > 0 &&
+		len(r.PostForm["introudce"]) > 0 &&
+		len(r.PostForm["enterprise"]) > 0 &&
+		len(r.PostForm["hotline"]) > 0 &&
+		len(r.PostForm["hotline"]) > 0 &&
+		len(r.PostForm["presell_number"]) > 0 {
+		BuildID = r.PostForm["build_id"][0]
+		PicView = r.PostForm["pic_view"][0]
+		BuildName = r.PostForm["build_name"][0]
+		Introduce = r.PostForm["introudce"][0]
+		Enterprise = r.PostForm["enterprise"][0]
+		Hotline = r.PostForm["hotline"][0]
+		PresellNumber = r.PostForm["presell_number"][0]
 	} else {
 		w.Write(ReturnJsonData(-1, nil, "参数不完整"))
 		return
 	}
 
 	//可以选择的信息
-	if len(r.PostForm["ChooseStime"]) > 0 {
-		ChooseStime, _ = strconv.ParseInt(r.PostForm["ChooseStime"][0], 10, 64)
+	if len(r.PostForm["choose_stime"]) > 0 {
+		ChooseStime, _ = strconv.ParseInt(r.PostForm["choose_stime"][0], 10, 64)
 	}
-	if len(r.PostForm["ChooseEndtime"]) > 0 {
-		ChooseEndtime, _ = strconv.ParseInt(r.PostForm["ChooseEndtime"][0], 10, 64)
+	if len(r.PostForm["choose_endtime"]) > 0 {
+		ChooseEndtime, _ = strconv.ParseInt(r.PostForm["choose_endtime"][0], 10, 64)
 	}
-	if len(r.PostForm["IntentStime"]) > 0 {
-		IntentStime, _ = strconv.ParseInt(r.PostForm["IntentStime"][0], 10, 64)
+	if len(r.PostForm["intent_stime"]) > 0 {
+		IntentStime, _ = strconv.ParseInt(r.PostForm["intent_stime"][0], 10, 64)
 	}
-	if len(r.PostForm["IntentEndtime"]) > 0 {
-		IntentEndtime, _ = strconv.ParseInt(r.PostForm["IntentEndtime"][0], 10, 64)
+	if len(r.PostForm["intent_endtime"]) > 0 {
+		IntentEndtime, _ = strconv.ParseInt(r.PostForm["intent_endtime"][0], 10, 64)
 	}
-	if len(r.PostForm["ReceptionStime"]) > 0 {
-		ReceptionStime, _ = strconv.ParseInt(r.PostForm["ReceptionStime"][0], 10, 64)
+	if len(r.PostForm["reception_stime"]) > 0 {
+		ReceptionStime, _ = strconv.ParseInt(r.PostForm["reception_stime"][0], 10, 64)
 	}
-	if len(r.PostForm["ReceptionEndtime"]) > 0 {
-		ReceptionEndtime, _ = strconv.ParseInt(r.PostForm["ReceptionEndtime"][0], 10, 64)
+	if len(r.PostForm["reception_endtime"]) > 0 {
+		ReceptionEndtime, _ = strconv.ParseInt(r.PostForm["reception_endtime"][0], 10, 64)
 	}
-	if len(r.PostForm["LotteryDate"]) > 0 {
-		LotteryDate, _ = strconv.ParseInt(r.PostForm["LotteryDate"][0], 10, 64)
+	if len(r.PostForm["lottery_date"]) > 0 {
+		LotteryDate, _ = strconv.ParseInt(r.PostForm["lottery_date"][0], 10, 64)
 	}
-	if len(r.PostForm["ReceptionSite"]) > 0 {
-		ReceptionSite = r.PostForm["ReceptionSite"][0]
-	}
-	if len(r.PostForm["PicView"]) > 0 {
-		PicView = r.PostForm["PicView"][0]
+	if len(r.PostForm["reception_site"]) > 0 {
+		ReceptionSite = r.PostForm["reception_site"][0]
 	}
 
 	house := model.House{
@@ -145,6 +152,32 @@ func GetHouseList(w http.ResponseWriter, r *http.Request) {
 
 	house := new(model.House)
 	w.Write(ReturnJsonData(-0, house.GetHouseList(), "ok"))
+}
+
+//删除房源
+func DelHouse(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-type", "application/json") // 设置返回格式
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Access-Control-Allow-Credentials", "true")
+	w.Header().Add("Access-Control-Allow-Methods", "*")
+	w.Header().Add("Access-Control-Allow-Headers", "Content-Type,Access-Token")
+	w.Header().Add("Access-Control-Expose-Headers", "*")
+
+	getParam := r.URL.Query() //获取URL,后面的查询参数
+
+	if len(getParam["name"]) <= 0 || len(getParam["token"]) <= 0 {
+		w.Write(ReturnJsonData(-1, nil, "参数不齐全"))
+		return
+	}
+
+	houseName := getParam["build_name[]"]
+	for _, v := range houseName {
+		fmt.Println(v)
+		hous := model.House{BuildName: v}
+		hous.Del()
+	}
+
+	w.Write(ReturnJsonData(0, nil, "ok"))
 }
 
 //修改房屋信息

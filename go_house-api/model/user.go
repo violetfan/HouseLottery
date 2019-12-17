@@ -38,12 +38,29 @@ func (u *User) Login() (bool, *User) {
 }
 
 //购房信息登记
-func (u *User) Register() (bool, *User) {
-	if _, ok := UserStore[u.Name]; ok { //已登记过
-		return false, nil
+func (u *User) Register() bool {
+	_, ok := UserStore[u.Name]
+	if ok { //已登记过
+		return false
+	} else {
+		UserStore[u.Name] = User{
+			ID:           u.ID,
+			Name:         u.Name,
+			HeadImg:      u.HeadImg,
+			Sex:          u.Sex,
+			Phone:        u.Phone,
+			Password:     u.Password,
+			Right:        u.Right,
+			RegisterTime: u.RegisterTime,
+			Status:       u.Status,
+			HouseType:    u.HouseType,
+			PurposeHouse: u.PurposeHouse,
+			IdentityType: u.IdentityType,
+			IdentityNum:  u.IdentityNum,
+			CheckStatus:  u.CheckStatus,
+		}
+		return true
 	}
-	UserStore[u.Name] = *u
-	return true, u
 }
 
 //购房信息审核
@@ -76,11 +93,11 @@ func (u *User) GetList() (UserList []User) {
 	return UserList
 }
 
-func (u *User) GetInfo() (UserInfo User) {
+func (u *User) GetInfo() *User {
 	UserInfo, check := UserStore[u.Name]
 	if check {
-		return UserInfo
+		return &UserInfo
 	} else {
-		return User{}
+		return &User{}
 	}
 }

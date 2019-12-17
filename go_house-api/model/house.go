@@ -26,6 +26,11 @@ func (h *House) Audit() bool {
 	return true
 }
 
+//删除
+func (h *House) Del() {
+	delete(HouseStore, h.BuildName)
+}
+
 //发布
 func (h *House) Issue() (bool, *House) {
 	//TODO::验证信息是否在正确,是否存在同名  BuildID ? BuildName ,统一一下主键
